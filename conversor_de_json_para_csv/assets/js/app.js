@@ -9,7 +9,7 @@ function jsonToCSV(json) {
     const headers = Object.keys(json[0]);
     const csv_rows = [];
 
-    csv_rows.push(headers.join(','));  
+    csv_rows.push(headers.join(','));
 
     for (const row of json) {
         const values = headers.map((header) => {
@@ -28,12 +28,24 @@ function jsonToCSV(json) {
         csv_rows.push(values.join(','));
     };
 
-   return csv_rows.join('\n');
+    return csv_rows.join('\n');
 };
 
 /* */
 json_to_csv_button.addEventListener('click', function () {
     const json = JSON.parse(converter_input.value.trim());
     const csv = jsonToCSV(json);
-    console.log(csv);
+    downloadCSV(csv);
 });
+
+/* */
+function downloadCSV(csv) {
+    const download_link = document.createElement('a');
+    download_link.setAttribute('href', 'data:text/csv;charset-utf-8,' + encodeURIComponent(csv));
+    download_link.setAttribute('download', 'data.csv');
+    download_link.style.display = 'none';
+
+    document.body.appendChild(download_link);
+    download_link.click();
+    document.body.removeChild(download_link);
+};
