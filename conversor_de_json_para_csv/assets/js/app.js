@@ -32,11 +32,30 @@ function jsonToCSV(json) {
 };
 
 /* */
-json_to_csv_button.addEventListener('click', function () {
-    const json = JSON.parse(converter_input.value.trim());
-    const csv = jsonToCSV(json);
-    downloadCSV(csv);
-});
+function csvToJSON(csv) {
+    const lines = csv.split('\n');
+    const headers = lines[0].split(',');
+    const json = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',');
+        const row = {};
+
+        for (let j = 0; j < headers.length; j++) {
+            let value = values[j];
+
+            if (value[0] === '{' || value[0] === '[') {
+                value = JSON.parse(value);
+            };
+
+            row[headers[j]] = value;
+        };
+
+        json.push(row);
+    };
+
+    console.log(json);
+};
 
 /* */
 function downloadCSV(csv) {
@@ -49,3 +68,16 @@ function downloadCSV(csv) {
     download_link.click();
     document.body.removeChild(download_link);
 };
+
+/* */
+json_to_csv_button.addEventListener('click', function () {
+    const json = JSON.parse(converter_input.value.trim());
+    const csv = jsonToCSV(json);
+    downloadCSV(csv);
+});
+
+/* */
+csv_to_json_button.addEventListener('click', function () {
+    const csv = converter_input.value.trim();
+    const json = csvToJSON(csv);
+});
