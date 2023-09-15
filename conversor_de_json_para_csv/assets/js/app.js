@@ -60,13 +60,35 @@ function converterCSVtoJSON(csv) {
 /* */
 function displayJSON(json) {
     const result_area = document.createElement('pre');
+    result_area.classList.add('result_area');
     result_area.textContent = JSON.stringify(json, null, 2);
 
     document.body.appendChild(result_area);
 
-    // const copy_button = document.createElement('button');
-    // copy_button.innerText = 'copiar';
-    // document.body.appendChild(copy_button);
+    const copy_button = document.createElement('button');
+    copy_button.classList.add('copy_json');
+    copy_button.innerText = 'copiar';
+    document.body.appendChild(copy_button);
+
+    copyJSON();
+};
+
+/* */
+function copyJSON() {
+    const result = document.querySelector('.result_area');
+    const copy_json = document.querySelector('.copy_json');
+    const json = result.innerText;
+
+    copy_json.addEventListener('click', function () {
+        navigator.clipboard.writeText(json)
+            .then(() => {
+                alert('JSON copiado para a área de transferência.');
+            },
+                (err) => {
+                    console.log('Erro ao copiar JSON.');
+                }
+            );
+    });
 };
 
 /* */
