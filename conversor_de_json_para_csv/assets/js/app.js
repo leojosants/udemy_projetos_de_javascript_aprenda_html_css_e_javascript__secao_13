@@ -5,7 +5,7 @@ const json_to_csv_button = document.querySelector('#json_to_csv_button');
 const csv_to_json_button = document.querySelector('#csv_to_json_button');
 
 /* */
-function jsonToCSV(json) {
+function converterJSONtoCSV(json) {
     const headers = Object.keys(json[0]);
     const csv_rows = [];
 
@@ -32,7 +32,7 @@ function jsonToCSV(json) {
 };
 
 /* */
-function csvToJSON(csv) {
+function converterCSVtoJSON(csv) {
     const lines = csv.split('\n');
     const headers = lines[0].split(',');
     const json = [];
@@ -54,7 +54,19 @@ function csvToJSON(csv) {
         json.push(row);
     };
 
-    console.log(json);
+    return json;
+};
+
+/* */
+function displayJSON(json) {
+    const result_area = document.createElement('pre');
+    result_area.textContent = JSON.stringify(json, null, 2);
+
+    document.body.appendChild(result_area);
+
+    // const copy_button = document.createElement('button');
+    // copy_button.innerText = 'copiar';
+    // document.body.appendChild(copy_button);
 };
 
 /* */
@@ -72,12 +84,13 @@ function downloadCSV(csv) {
 /* */
 json_to_csv_button.addEventListener('click', function () {
     const json = JSON.parse(converter_input.value.trim());
-    const csv = jsonToCSV(json);
+    const csv = converterJSONtoCSV(json);
     downloadCSV(csv);
 });
 
 /* */
 csv_to_json_button.addEventListener('click', function () {
     const csv = converter_input.value.trim();
-    const json = csvToJSON(csv);
+    const json = converterCSVtoJSON(csv);
+    displayJSON(json);
 });
